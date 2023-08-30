@@ -44,13 +44,23 @@
                     @foreach ($employees as $employee)
                     <tr>
                         <td width="30">{{$employee->id}}</td>
-                        <td></td>
+                        <td>
+                            @if($employee->image !='' && file_exists(public_path().'/uploads/employees/'.$employee->image))
+                            <img src="{{ asset('uploads/employees/' . $employee->image) }}" alt="Image" width="40" height="40" class="rounded-circle">
+                            @else
+                            <img src="{{ asset('uploads/employees/no-image.png') }}" alt="Image" width="40" height="40" class="rounded-circle">
+                            @endif
+                        </td>
                         <td>{{$employee->name}}</td>
                         <td>{{$employee->email}}</td>
                         <td>{{$employee->address}}</td>
                         <td>
-                            <a href="#" class="btn btn-primary">Edit</a>
-                            <a href="#" class="btn btn-danger">Delete</a>
+                            <a href="{{ route('employees.edit', $employee->id) }}" class="btn btn-primary btn-sm">Edit</a>
+                            <a href="#" onclick="deleteEmployee({{ $employee->id }})" class="btn btn-danger btn-sm">Delete</a>
+                                <form id="employee-edit-action-{{ $employee->id }}" action="{{ route( 'employees.destroy', $employee->id )}}" method="post" enctype="multipart/form-data">
+                                    @csrf
+                                    @method('DELETE')
+                                </form>
                         </td>
                     </tr>
                     @endforeach
@@ -63,9 +73,9 @@
             </div>
         </div>
 
-        <?php /*<div class="mt-3">
+        <div class="mt-4">
             {{ $employees->links() }}
-        </div> */?>
+        </div>
 
     </div> 
 
