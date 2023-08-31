@@ -73,7 +73,7 @@
             </div>
         </div>
 
-        <div class="mt-4">
+        <div class="mt-3">
             {{ $employees->links() }}
         </div>
 
