@@ -6,6 +6,8 @@ use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class EmployeeController extends Controller
 {
@@ -95,6 +97,15 @@ class EmployeeController extends Controller
         // $request->session()->flash('Success','Employee deleted Successfully');
         return redirect()->route('employees.index',$id)->with('Success','Employee deleted Successfully');
 
+    }
+
+    public function viewpdf($id) {
+        $employee = Employee::findOrFail($id);
+        $data['employee'] = $employee;
+    
+        $pdf = Pdf::loadView('pdf.empdetail', $data);
+        // return $pdf->download('pdf.empdetail');
+        return $pdf->stream();
     }
 
 }
